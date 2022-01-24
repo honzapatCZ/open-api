@@ -15,11 +15,7 @@ describe(path.basename(__dirname), () => {
       apiDoc: path.resolve(__dirname, 'apiDoc.yml'),
       featureType: 'middleware',
       name: 'some-framework',
-      operations: {
-        getFoo(req, res) {
-          // Operation body
-        },
-      },
+      operations: {},
       logger: {
         debug: ignore,
         error: ignore,
@@ -32,10 +28,8 @@ describe(path.basename(__dirname), () => {
     });
   });
 
-  it('should throw an error', () => {
-    expect(() => {
-      framework.initialize({});
-    }).to.throw("Cannot read property 'undefined' of undefined");
+  it('should log a warning', () => {
+    framework.initialize({});
     expect(warnings).to.deep.equal([
       'some-framework: path /foo, operation get is missing an operationId',
     ]);

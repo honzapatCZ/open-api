@@ -20,11 +20,11 @@ export interface KoaRouter {
 
 export interface KoaOpenAPIInitializeArgs extends OpenAPIFrameworkArgs {
   consumesMiddleware?: { [mimeType: string]: Middleware };
-  docsPath: string;
-  errorMiddleware: Middleware;
-  exposeApiDocs: boolean;
+  docsPath?: string;
+  errorMiddleware?: Middleware;
+  exposeApiDocs?: boolean;
   router: KoaRouter;
-  securityFilter: Middleware;
+  securityFilter?: Middleware;
 }
 
 export function initialize(args: KoaOpenAPIInitializeArgs): OpenAPIFramework {
@@ -147,7 +147,7 @@ export function initialize(args: KoaOpenAPIInitializeArgs): OpenAPIFramework {
         }
 
         if (operationCtx.features.securityHandler) {
-          middleware.push(
+          middleware.unshift(
             createSecurityMiddleware(operationCtx.features.securityHandler)
           );
         }
@@ -205,7 +205,7 @@ function createAssignApiDocMiddleware(apiDoc, operationDoc) {
 
 function createSecurityMiddleware(handler) {
   return function securityMiddleware(ctx: Context) {
-    handler.handle(ctx, (err, result) => {
+    return handler.handle(ctx, (err, result) => {
       if (err) {
         if (err.challenge) {
           ctx.set('www-authenticate', err.challenge);

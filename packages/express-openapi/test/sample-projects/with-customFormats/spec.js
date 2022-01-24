@@ -17,7 +17,7 @@ describe('input validation', function () {
             {
               errorCode: 'format.openapi.requestValidation',
               location: 'query',
-              message: 'should match format "foo"',
+              message: 'must match format "foo"',
               path: 'foo',
             },
           ],
@@ -42,7 +42,7 @@ describe('response validation', function () {
           errors: [
             {
               errorCode: 'format.openapi.responseValidation',
-              message: 'should match format "foo"',
+              message: 'must match format "foo"',
               path: 'name',
             },
           ],

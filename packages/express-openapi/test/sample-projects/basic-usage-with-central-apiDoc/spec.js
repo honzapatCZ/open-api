@@ -19,7 +19,12 @@ it('should use defaults, coercion, and operation parameter overriding', function
     .get('/v3/users/34?name=fred')
     .expect(200)
     .end(function (err, res) {
-      expect(res.body).to.eql({ id: 34, name: 'fred', age: 80 });
+      expect(res.body).to.eql({
+        id: 34,
+        name: 'fred',
+        age: 80,
+        valueFromMiddleware: 'bar',
+      });
       done(err);
     });
 });
@@ -34,7 +39,7 @@ it('should validate input', function (done) {
           {
             errorCode: 'pattern.openapi.requestValidation',
             location: 'query',
-            message: 'should match pattern "^fred$"',
+            message: 'must match pattern "^fred$"',
             path: 'name',
           },
         ],
@@ -88,7 +93,7 @@ it('should dereference #/definitions/ for validation', function (done) {
           {
             errorCode: 'required.openapi.requestValidation',
             location: 'body',
-            message: "should have required property 'name'",
+            message: "must have required property 'name'",
             path: 'name',
           },
         ],
